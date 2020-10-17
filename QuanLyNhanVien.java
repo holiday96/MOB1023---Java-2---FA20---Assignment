@@ -98,7 +98,7 @@ public class QuanLyNhanVien implements Runnable {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\DB\\Desktop\\employees.png"));
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\holid\\Desktop\\employees.png"));
 		frame.setTitle("QUẢN LÝ NHÂN VIÊN");
 		frame.setBounds(100, 100, 579, 438);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -237,12 +237,13 @@ public class QuanLyNhanVien implements Runnable {
 				openFile();
 				if (list.size() > 0) {
 					index = 0;
+					fillToTable();
 					showDetail();
 				} else {
 					index = -1;
 					clearForm();
+					fillToTable();
 				}
-				fillToTable();
 			}
 		});
 		btnOpen.setBounds(467, 191, 90, 28);
@@ -351,7 +352,7 @@ public class QuanLyNhanVien implements Runnable {
 		scrollPane.setViewportView(table);
 
 		JLabel lblBackground = new JLabel("");
-		lblBackground.setIcon(new ImageIcon("D:\\Pictures\\Desktop Wallpapers\\0004 - HBKMXib.jpg"));
+		lblBackground.setIcon(new ImageIcon("C:\\Users\\holid\\Pictures\\0004 - HBKMXib.jpg"));
 		lblBackground.setBounds(0, 0, 573, 409);
 		frame.getContentPane().add(lblBackground);
 		frame.setResizable(false);
@@ -373,12 +374,13 @@ public class QuanLyNhanVien implements Runnable {
 		txtAge.setText(String.valueOf(list.get(index).getAge()));
 		txtEmail.setText(list.get(index).getEmail());
 		txtSalary.setText(String.valueOf(list.get(index).getSalary()));
+		table.setRowSelectionInterval(index, index);
 	}
 
 	@SuppressWarnings("unchecked")
 	private void openFile() {
 		try {
-			ObjectInputStream ois = new ObjectInputStream(new FileInputStream("C:/Users/DB/Desktop/staff.dat"));
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream("C:/Users/holid/Desktop/staff.dat"));
 			Object object = ois.readObject();
 			ois.close();
 			list = (List<Employee>) object;
@@ -390,7 +392,7 @@ public class QuanLyNhanVien implements Runnable {
 
 	private void saveFile() {
 		try {
-			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("C:/Users/DB/Desktop/staff.dat"));
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("C:/Users/holid/Desktop/staff.dat"));
 			oos.writeObject(list);
 			oos.close();
 		} catch (Exception e) {
@@ -440,8 +442,8 @@ public class QuanLyNhanVien implements Runnable {
 					txtAge.setBackground(Color.YELLOW);
 					JOptionPane.showMessageDialog(btnSave, "Trống", "Tuổi", JOptionPane.WARNING_MESSAGE);
 					return false;
-				} else if (Integer.parseInt(txtAge.getText()) <= 0) {
-					JOptionPane.showMessageDialog(btnSave, "Tuổi phải là số dương!", "Tuổi", JOptionPane.ERROR_MESSAGE);
+				} else if (Integer.parseInt(txtAge.getText()) <= 16 || Integer.parseInt(txtAge.getText()) >= 55) {
+					JOptionPane.showMessageDialog(btnSave, "Tuổi không hợp lệ!", "Tuổi", JOptionPane.ERROR_MESSAGE);
 					return false;
 				} else {
 					Integer.parseInt(txtAge.getText());
@@ -471,9 +473,8 @@ public class QuanLyNhanVien implements Runnable {
 					txtSalary.setBackground(Color.YELLOW);
 					JOptionPane.showMessageDialog(btnSave, "Trống", "Lương", JOptionPane.WARNING_MESSAGE);
 					return false;
-				} else if (Double.parseDouble(txtSalary.getText()) <= 0) {
-					JOptionPane.showMessageDialog(btnSave, "Lương phải là số dương!", "Lương",
-							JOptionPane.ERROR_MESSAGE);
+				} else if (Double.parseDouble(txtSalary.getText()) <= 5000000) {
+					JOptionPane.showMessageDialog(btnSave, "Lương không hợp lệ", "Lương", JOptionPane.ERROR_MESSAGE);
 					return false;
 				} else {
 					Double.parseDouble(txtSalary.getText());
