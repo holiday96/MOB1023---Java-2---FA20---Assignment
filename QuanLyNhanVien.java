@@ -67,6 +67,7 @@ public class QuanLyNhanVien implements Runnable {
 	int index = -1;
 	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
 			Pattern.CASE_INSENSITIVE);
+	StringBuilder s = new StringBuilder();
 
 	/**
 	 * Launch the application.
@@ -155,7 +156,7 @@ public class QuanLyNhanVien implements Runnable {
 		frame.getContentPane().add(txtEmail);
 
 		txtSalary = new JTextField();
-		txtSalary.setToolTipText("Nhập số lương");
+		txtSalary.setToolTipText("> 5.000.000");
 		txtSalary.setColumns(10);
 		txtSalary.setBounds(105, 189, 112, 28);
 		frame.getContentPane().add(txtSalary);
@@ -187,6 +188,7 @@ public class QuanLyNhanVien implements Runnable {
 			public void actionPerformed(ActionEvent e) {
 				clearForm();
 				index = -1;
+				setStatusButton();
 			}
 		});
 		btnNew.setBounds(467, 48, 90, 28);
@@ -202,6 +204,7 @@ public class QuanLyNhanVien implements Runnable {
 					updateEmployee();
 				}
 				fillToTable();
+				setStatusButton();
 			}
 		});
 		btnSave.setBounds(467, 84, 90, 28);
@@ -215,6 +218,7 @@ public class QuanLyNhanVien implements Runnable {
 				clearForm();
 				index = -1;
 				fillToTable();
+				setStatusButton();
 			}
 		});
 		btnDelete.setBounds(467, 119, 90, 28);
@@ -244,6 +248,7 @@ public class QuanLyNhanVien implements Runnable {
 					clearForm();
 					fillToTable();
 				}
+				setStatusButton();
 			}
 		});
 		btnOpen.setBounds(467, 191, 90, 28);
@@ -268,6 +273,7 @@ public class QuanLyNhanVien implements Runnable {
 					index = 0;
 					showDetail();
 				}
+				setStatusButton();
 			}
 		});
 		btnBegin.setBounds(68, 229, 50, 28);
@@ -281,6 +287,7 @@ public class QuanLyNhanVien implements Runnable {
 					index--;
 					showDetail();
 				}
+				setStatusButton();
 			}
 		});
 		btnBack.setBounds(118, 229, 50, 28);
@@ -294,6 +301,7 @@ public class QuanLyNhanVien implements Runnable {
 					index++;
 					showDetail();
 				}
+				setStatusButton();
 			}
 		});
 		btnNext.setBounds(180, 229, 50, 28);
@@ -307,6 +315,7 @@ public class QuanLyNhanVien implements Runnable {
 					index = list.size() - 1;
 					showDetail();
 				}
+				setStatusButton();
 			}
 		});
 		btnEnd.setBounds(230, 229, 50, 28);
@@ -347,6 +356,7 @@ public class QuanLyNhanVien implements Runnable {
 			public void mouseClicked(MouseEvent e) {
 				index = table.getSelectedRow();
 				showDetail();
+				setStatusButton();
 			}
 		});
 		scrollPane.setViewportView(table);
@@ -357,6 +367,26 @@ public class QuanLyNhanVien implements Runnable {
 		frame.getContentPane().add(lblBackground);
 		frame.setResizable(false);
 
+	}
+
+	private void setStatusButton() {
+		if (index == list.size() - 1) {
+			btnNext.setEnabled(false);
+			btnEnd.setEnabled(false);
+		}
+		if (index == 0) {
+			btnBack.setEnabled(false);
+			btnBegin.setEnabled(false);
+		}
+		if (index != 0) {
+			btnBegin.setEnabled(true);
+			btnBack.setEnabled(true);
+
+		}
+		if(index != list.size() - 1) {
+			btnNext.setEnabled(true);
+			btnEnd.setEnabled(true);
+		}
 	}
 
 	private void fillToTable() {
@@ -557,6 +587,7 @@ public class QuanLyNhanVien implements Runnable {
 		txtEmail.setText("");
 		txtSalary.setText("");
 		lblStatus.setText("");
+		table.clearSelection();
 	}
 
 	@Override
